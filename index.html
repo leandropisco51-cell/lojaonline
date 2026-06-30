@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STREETWEAR // Loja Online & CMS</title>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <div class="logo" onclick="app.navigate('home')">
+                STREETWEAR <span>LAB</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-link active" data-view="home" onclick="app.navigate('home')">Home</li>
+                <li class="nav-link" data-view="catalog" onclick="app.navigate('catalog')">Coleções</li>
+                <li class="nav-link" data-view="admin" onclick="app.navigate('admin')">Painel Admin</li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn-icon" id="theme-toggle" onclick="app.toggleTheme()" title="Alternar Tema">
+                    <i data-lucide="sun"></i>
+                </button>
+                <button class="btn-icon" onclick="app.navigate('checkout')" title="Ver Sacola">
+                    <i data-lucide="shopping-bag"></i>
+                    <span class="cart-count" id="cart-badge">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Views Container -->
+    <main>
+
+        <!-- VIEW: HOME -->
+        <section id="view-home" class="app-view">
+            <!-- Hero Banner -->
+            <div class="hero-banner" id="hero-banner-el">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <span class="hero-tag">Nova Coleção Drop #04</span>
+                    <h1 class="hero-title">O Estilo das Ruas <span>Redefinido.</span></h1>
+                    <p class="hero-desc">Drops limitados com estampas exclusivas, tecidos pesados de alta durabilidade e caimento oversized perfeito para o seu rolê urbano.</p>
+                    <button class="btn-primary" onclick="app.navigate('catalog')">
+                        Explorar Coleção <i data-lucide="arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Categories Featured -->
+            <h2 class="section-title">Categorias <span>Ver Todas</span></h2>
+            <div class="categories-grid">
+                <div class="category-card" onclick="app.filterByCategory('Camisetas')">
+                    <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&q=80" alt="Camisetas">
+                    <div class="category-overlay">
+                        <h3 class="category-name">Camisetas</h3>
+                        <span class="category-count" id="count-Camisetas">0 Itens</span>
+                    </div>
+                </div>
+                <div class="category-card" onclick="app.filterByCategory('Moletons')">
+                    <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500&q=80" alt="Moletons">
+                    <div class="category-overlay">
+                        <h3 class="category-name">Moletons</h3>
+                        <span class="category-count" id="count-Moletons">0 Itens</span>
+                    </div>
+                </div>
+                <div class="category-card" onclick="app.filterByCategory('Acessórios')">
+                    <img src="https://images.unsplash.com/photo-1576243345690-4e4b79b63288?w=500&q=80" alt="Acessórios">
+                    <div class="category-overlay">
+                        <h3 class="category-name">Acessórios</h3>
+                        <span class="category-count" id="count-Acessórios">0 Itens</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vitrine de Lançamentos -->
+            <h2 class="section-title">Lançamentos em Destaque</h2>
+            <div class="products-grid" id="home-featured-products">
+                <!-- Dynamic Content -->
+            </div>
+        </section>
+
+        <!-- VIEW: CATALOG -->
+        <section id="view-catalog" class="app-view" style="display: none;">
+            <div class="catalog-container">
+                <!-- Filters Sidebar -->
+                <aside class="filters-sidebar">
+                    <h3 style="margin-bottom: 1.5rem;">Filtros</h3>
+                    
+                    <div class="filter-group">
+                        <h4 class="filter-title">Categorias</h4>
+                        <div class="filter-options" id="filter-categories-list">
+                            <!-- Dynamic Categories -->
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <h4 class="filter-title">Grade de Tamanhos</h4>
+                        <div class="filter-sizes" id="filter-sizes-list">
+                            <button class="size-btn" onclick="app.toggleFilterSize('P')">P</button>
+                            <button class="size-btn" onclick="app.toggleFilterSize('M')">M</button>
+                            <button class="size-btn" onclick="app.toggleFilterSize('G')">G</button>
+                            <button class="size-btn" onclick="app.toggleFilterSize('GG')">GG</button>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <h4 class="filter-title">Cores</h4>
+                        <div class="color-dots" id="filter-colors-list">
+                            <!-- Dynamic colors -->
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <h4 class="filter-title">Preço Máximo</h4>
+                        <input type="range" class="range-slider" id="filter-price-range" min="0" max="1000" step="10" value="1000" oninput="app.updatePriceFilter(this.value)">
+                        <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-secondary);">
+                            <span>R$ 0</span>
+                            <span id="price-filter-value">R$ 1000</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-secondary" style="width: 100%; margin-top: 1rem;" onclick="app.clearFilters()">Limpar Filtros</button>
+                </aside>
+
+                <!-- Product List Area -->
+                <section>
+                    <div class="catalog-header">
+                        <div id="catalog-results-count" style="color: var(--text-secondary);">Exibindo todos os produtos</div>
+                        <select class="sort-select" id="sort-select" onchange="app.handleSort(this.value)">
+                            <option value="recent">Mais Recentes</option>
+                            <option value="price-asc">Menor Preço</option>
+                            <option value="price-desc">Maior Preço</option>
+                        </select>
+                    </div>
+
+                    <div class="products-grid" id="catalog-products-list">
+                        <!-- Dynamic Catalog Products -->
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <!-- VIEW: PRODUCT DETAIL -->
+        <section id="view-product-detail" class="app-view" style="display: none;">
+            <button class="btn-secondary" style="margin-bottom: 2rem;" onclick="app.navigate('catalog')">
+                <i data-lucide="arrow-left"></i> Voltar ao Catálogo
+            </button>
+
+            <div class="product-detail-layout" id="product-detail-content">
+                <!-- Dynamic Detail Content -->
+            </div>
+        </section>
+
+        <!-- VIEW: CHECKOUT & BAG -->
+        <section id="view-checkout" class="app-view" style="display: none;">
+            <div class="checkout-layout">
+                <!-- Checkout Form & Selection -->
+                <div>
+                    <h2 style="margin-bottom: 2rem;">Finalizar Pedido</h2>
+                    
+                    <!-- Form 1: Dados Pessoais -->
+                    <div class="checkout-section">
+                        <h3 class="checkout-section-title"><i data-lucide="user"></i> 1. Seus Dados</h3>
+                        <form id="checkout-user-form" class="form-grid">
+                            <div class="form-group full-width">
+                                <label for="checkout-name">Nome Completo</label>
+                                <input type="text" id="checkout-name" class="form-input" placeholder="Seu nome completo" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="checkout-email">E-mail</label>
+                                <input type="email" id="checkout-email" class="form-input" placeholder="seu@email.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="checkout-phone">Telefone</label>
+                                <input type="tel" id="checkout-phone" class="form-input" placeholder="(00) 00000-0000" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="checkout-address">Endereço de Entrega</label>
+                                <input type="text" id="checkout-address" class="form-input" placeholder="Rua, Número, Bairro, Cidade, Estado" required>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Form 2: Pagamento -->
+                    <div class="checkout-section">
+                        <h3 class="checkout-section-title"><i data-lucide="credit-card"></i> 2. Forma de Pagamento</h3>
+                        
+                        <div class="payment-methods-grid">
+                            <div class="payment-method-card active" id="pay-method-pix" onclick="app.setPaymentMethod('PIX')">
+                                <i data-lucide="qr-code"></i>
+                                <span>PIX</span>
+                            </div>
+                            <div class="payment-method-card" id="pay-method-card" onclick="app.setPaymentMethod('CreditCard')">
+                                <i data-lucide="credit-card"></i>
+                                <span>Cartão</span>
+                            </div>
+                            <div class="payment-method-card" id="pay-method-boleto" onclick="app.setPaymentMethod('Boleto')">
+                                <i data-lucide="file-text"></i>
+                                <span>Boleto</span>
+                            </div>
+                        </div>
+
+                        <div class="payment-details-panel">
+                            <!-- Dynamic Payment Form / Fields -->
+                            <div id="payment-panel-pix">
+                                <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">O código PIX e QR Code serão gerados ao clicar em finalizar o pedido.</p>
+                                <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--secondary); font-weight: 600;">
+                                    <i data-lucide="sparkles"></i> Desconto de 5% aplicado no PIX!
+                                </div>
+                            </div>
+
+                            <div id="payment-panel-card" style="display: none;" class="form-grid">
+                                <div class="form-group full-width">
+                                    <label for="card-number">Número do Cartão</label>
+                                    <input type="text" id="card-number" class="form-input" placeholder="0000 0000 0000 0000" maxlength="19">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="card-name">Nome Impresso no Cartão</label>
+                                    <input type="text" id="card-name" class="form-input" placeholder="Como no cartão">
+                                </div>
+                                <div class="form-group">
+                                    <label for="card-expiry">Validade</label>
+                                    <input type="text" id="card-expiry" class="form-input" placeholder="MM/AA" maxlength="5">
+                                </div>
+                                <div class="form-group">
+                                    <label for="card-cvv">CVV</label>
+                                    <input type="text" id="card-cvv" class="form-input" placeholder="123" maxlength="4">
+                                </div>
+                            </div>
+
+                            <div id="payment-panel-boleto" style="display: none;">
+                                <p style="color: var(--text-secondary);">O boleto bancário será gerado e enviado para seu e-mail para pagamento. Prazo de compensação de 1 a 2 dias úteis.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <aside class="order-summary-panel">
+                    <h3 style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">Resumo da Sacola</h3>
+                    <div id="checkout-cart-items">
+                        <!-- Dynamic Checkout Items -->
+                    </div>
+
+                    <div style="margin-top: 1.5rem;">
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span id="summary-subtotal">R$ 0,00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Frete</span>
+                            <span style="color: var(--secondary); font-weight: 700;">Grátis</span>
+                        </div>
+                        <div class="summary-row" id="pix-discount-row" style="color: var(--secondary);">
+                            <span>Desconto PIX (-5%)</span>
+                            <span id="summary-discount">- R$ 0,00</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total</span>
+                            <span id="summary-total">R$ 0,00</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary" style="width: 100%; margin-top: 1.5rem; justify-content: center;" onclick="app.submitOrder()">
+                        Finalizar e Pagar <i data-lucide="check-circle-2"></i>
+                    </button>
+                </aside>
+            </div>
+        </section>
+
+        <!-- VIEW: ADMIN PANEL (CMS) -->
+        <section id="view-admin" class="app-view" style="display: none;">
+            <!-- Admin Login Wall -->
+            <div id="admin-login-wall" style="max-width: 400px; margin: 4rem auto; background-color: var(--bg-surface); border: 1px solid var(--border); padding: 2.5rem; border-radius: 24px; box-shadow: var(--shadow);">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div style="width: 60px; height: 60px; border-radius: 50%; background-color: var(--primary); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1rem; color: white;">
+                        <i data-lucide="lock" style="width: 28px; height: 28px;"></i>
+                    </div>
+                    <h2>Acesso Restrito</h2>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Insira suas credenciais administrativas</p>
+                </div>
+                <form onsubmit="app.handleAdminLogin(event)" style="display: flex; flex-direction: column; gap: 1.25rem;">
+                    <div class="form-group">
+                        <label for="admin-user">Usuário</label>
+                        <input type="text" id="admin-user" class="form-input" placeholder="admin" required autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-pass">Senha</label>
+                        <input type="password" id="admin-pass" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+                    </div>
+                    <button type="submit" class="btn-primary" style="justify-content: center; margin-top: 0.5rem;">Entrar no Painel</button>
+                </form>
+            </div>
+
+            <div class="admin-container" id="admin-main-area" style="display: none;">
+                <!-- Admin Sidebar -->
+                <aside class="admin-sidebar">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700;">
+                            AD
+                        </div>
+                        <div>
+                            <div style="font-weight: 700;">Admin User</div>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary);">Gerenciador</div>
+                        </div>
+                    </div>
+                    <ul class="admin-menu-list">
+                        <li class="admin-menu-item active" id="admin-menu-dash" onclick="app.setAdminTab('dash')">
+                            <i data-lucide="layout-dashboard"></i> Dashboard
+                        </li>
+                        <li class="admin-menu-item" id="admin-menu-inventory" onclick="app.setAdminTab('inventory')">
+                            <i data-lucide="package"></i> Inventário
+                        </li>
+                        <li class="admin-menu-item" id="admin-menu-orders" onclick="app.setAdminTab('orders')">
+                            <i data-lucide="shopping-cart"></i> Pedidos
+                        </li>
+                        <li class="admin-menu-item" style="margin-top: 2rem; background-color: rgba(239, 68, 68, 0.1); color: #ef4444; opacity: 1;" onclick="app.handleAdminLogout()">
+                            <i data-lucide="log-out"></i> Sair do Painel
+                        </li>
+                    </ul>
+                </aside>
+
+                <!-- Admin Dynamic Area -->
+                <div class="admin-content">
+                    <!-- Tab: Dashboard -->
+                    <div id="admin-tab-dash">
+                        <h2 style="margin-bottom: 2rem;">Painel de Controle</h2>
+                        
+                        <div class="dash-cards-grid">
+                            <div class="dash-card">
+                                <div class="dash-card-title">Faturamento Total</div>
+                                <div class="dash-card-value" id="dash-revenue">R$ 0,00</div>
+                            </div>
+                            <div class="dash-card">
+                                <div class="dash-card-title">Pedidos Concluídos</div>
+                                <div class="dash-card-value" id="dash-orders-count">0</div>
+                            </div>
+                            <div class="dash-card">
+                                <div class="dash-card-title">Pedidos Pendentes</div>
+                                <div class="dash-card-value" id="dash-orders-pending" style="color: var(--primary);">0</div>
+                            </div>
+                            <div class="dash-card">
+                                <div class="dash-card-title">Itens no Catálogo</div>
+                                <div class="dash-card-value" id="dash-products-count">0</div>
+                            </div>
+                        </div>
+
+                        <!-- Gráfico / Visão de Pedidos Recentes -->
+                        <h3 class="section-title">Vendas Recentes</h3>
+                        <div class="data-table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID Pedido</th>
+                                        <th>Cliente</th>
+                                        <th>Total</th>
+                                        <th>Método</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dash-recent-orders-list">
+                                    <!-- Dynamic content -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tab: Inventário (CRUD) -->
+                    <div id="admin-tab-inventory" style="display: none;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                            <h2>Gestão de Inventário</h2>
+                            <button class="btn-primary" onclick="app.openProductModal()">Novo Produto <i data-lucide="plus"></i></button>
+                        </div>
+
+                        <div class="data-table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Foto</th>
+                                        <th>Nome</th>
+                                        <th>Categoria</th>
+                                        <th>Preço</th>
+                                        <th>Estoque</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-inventory-list">
+                                    <!-- Dynamic content -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tab: Pedidos -->
+                    <div id="admin-tab-orders" style="display: none;">
+                        <h2 style="margin-bottom: 2rem;">Gestão de Pedidos</h2>
+
+                        <div class="data-table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Cliente</th>
+                                        <th>Itens</th>
+                                        <th>Total</th>
+                                        <th>Status</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-orders-list">
+                                    <!-- Dynamic Content -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div> <!-- Close admin-main-area -->
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>STREETWEAR LAB</h3>
+                <p>Nascido na cultura urbana, focado na alta costura streetwear. Feito por jovens para jovens.</p>
+                <div class="social-links">
+                    <a class="btn-icon" href="#"><i data-lucide="instagram"></i></a>
+                    <a class="btn-icon" href="#"><i data-lucide="twitter"></i></a>
+                    <a class="btn-icon" href="#"><i data-lucide="facebook"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Navegação</h4>
+                <ul>
+                    <li><a href="#" onclick="app.navigate('home')">Home</a></li>
+                    <li><a href="#" onclick="app.navigate('catalog')">Coleções</a></li>
+                    <li><a href="#" onclick="app.navigate('checkout')">Sacola</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Suporte</h4>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Trocas e Devoluções</a></li>
+                    <li><a href="#">Fale Conosco</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 STREETWEAR LAB. Todos os direitos reservados.
+        </div>
+    </footer>
+
+    <!-- MODAL: ADD/EDIT PRODUCT -->
+    <div class="modal-overlay" id="product-modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="app.closeProductModal()">&times;</span>
+            <h3 id="modal-product-title" style="margin-bottom: 1.5rem;">Cadastrar Produto</h3>
+            
+            <form id="product-form" onsubmit="app.saveProduct(event)" class="form-grid" style="max-height: 80vh; overflow-y: auto; padding-right: 0.5rem;">
+                <input type="hidden" id="edit-product-id">
+                
+                <div class="form-group full-width">
+                    <label for="prod-name">Nome do Vestuário</label>
+                    <input type="text" id="prod-name" class="form-input" placeholder="Ex: Camiseta Heavyweight Oversized" required>
+                </div>
+                <div class="form-group full-width">
+                    <label for="prod-desc">Descrição Detalhada</label>
+                    <input type="text" id="prod-desc" class="form-input" placeholder="Detalhes do tecido, estampa, etc." required>
+                </div>
+                <div class="form-group">
+                    <label for="prod-price">Preço (R$)</label>
+                    <input type="number" id="prod-price" class="form-input" placeholder="0.00" step="0.01" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="prod-stock">Estoque Inicial</label>
+                    <input type="number" id="prod-stock" class="form-input" placeholder="10" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="prod-category">Categoria</label>
+                    <select id="prod-category" class="form-input" required>
+                        <option value="Camisetas">Camisetas</option>
+                        <option value="Moletons">Moletons</option>
+                        <option value="Acessórios">Acessórios</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="prod-image">URL da Foto</label>
+                    <input type="url" id="prod-image" class="form-input" placeholder="https://unsplash.com/...">
+                </div>
+                <div class="form-group">
+                    <label for="prod-file">Ou Carregar Arquivo</label>
+                    <input type="file" id="prod-file" class="form-input" accept="image/*" onchange="app.handleLocalFileUpload(this)">
+                </div>
+                <div class="form-group full-width">
+                    <label>Grade de Tamanhos</label>
+                    <div style="display: flex; gap: 1rem; align-items: center; margin-top: 0.25rem;">
+                        <label><input type="checkbox" name="prod-sizes" value="P" checked> P</label>
+                        <label><input type="checkbox" name="prod-sizes" value="M" checked> M</label>
+                        <label><input type="checkbox" name="prod-sizes" value="G" checked> G</label>
+                        <label><input type="checkbox" name="prod-sizes" value="GG" checked> GG</label>
+                    </div>
+                </div>
+                <div class="form-group full-width">
+                    <label>Cores Disponíveis (Escolha múltiplas)</label>
+                    <div style="display: flex; gap: 1rem; align-items: center; margin-top: 0.25rem;">
+                        <label><input type="checkbox" name="prod-colors" value="#000000" checked> Preto</label>
+                        <label><input type="checkbox" name="prod-colors" value="#ffffff"> Branco</label>
+                        <label><input type="checkbox" name="prod-colors" value="#708090"> Chumbo</label>
+                        <label><input type="checkbox" name="prod-colors" value="#ff5a1f"> Laranja</label>
+                    </div>
+                </div>
+
+                <div class="form-group full-width" style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                    <button type="submit" class="btn-primary" style="flex-grow: 1; justify-content: center;">Salvar Produto</button>
+                    <button type="button" class="btn-secondary" onclick="app.closeProductModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: ORDER CONFIRMATION / PAYMENT ACTION -->
+    <div class="modal-overlay" id="order-modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="app.closeOrderModal()">&times;</span>
+            <div style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1.5rem;" id="order-modal-content">
+                <!-- Dynamic order payment screen (QR code, Copia e cola, Boleto code) -->
+            </div>
+        </div>
+    </div>
+
+    <!-- App Logic Script -->
+    <script src="app.js"></script>
+</body>
+</html>
