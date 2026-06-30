@@ -86,10 +86,22 @@
 
         <!-- VIEW: CATALOG -->
         <section id="view-catalog" class="app-view" style="display: none;">
+            <!-- Mobile Filters Trigger Button -->
+            <div class="mobile-filter-bar">
+                <button class="btn-secondary mobile-filter-btn" onclick="app.toggleMobileFilters()">
+                    <i data-lucide="sliders-horizontal"></i> Filtros & Ordenação
+                </button>
+            </div>
+
             <div class="catalog-container">
                 <!-- Filters Sidebar -->
-                <aside class="filters-sidebar">
-                    <h3 style="margin-bottom: 1.5rem;">Filtros</h3>
+                <aside class="filters-sidebar" id="filters-sidebar-el">
+                    <div class="filters-sidebar-header">
+                        <h3 style="margin-bottom: 0;">Filtros</h3>
+                        <button class="btn-icon close-filters-btn" onclick="app.toggleMobileFilters()" title="Fechar Filtros">
+                            <i data-lucide="x"></i>
+                        </button>
+                    </div>
                     
                     <div class="filter-group">
                         <h4 class="filter-title">Categorias</h4>
@@ -535,6 +547,29 @@
                 <!-- Dynamic order payment screen (QR code, Copia e cola, Boleto code) -->
             </div>
         </div>
+    </div>
+
+    <!-- Bottom Navigation Bar (Mobile Only) -->
+    <div class="bottom-nav">
+        <button class="bottom-nav-item active" id="bottom-nav-home" onclick="app.navigate('home')">
+            <i data-lucide="home"></i>
+            <span>Início</span>
+        </button>
+        <button class="bottom-nav-item" id="bottom-nav-catalog" onclick="app.navigate('catalog')">
+            <i data-lucide="search"></i>
+            <span>Buscar</span>
+        </button>
+        <button class="bottom-nav-item" id="bottom-nav-checkout" onclick="app.navigate('checkout')">
+            <div style="position: relative; display: inline-block;">
+                <i data-lucide="shopping-bag"></i>
+                <span class="cart-count" id="bottom-cart-badge">0</span>
+            </div>
+            <span>Sacola</span>
+        </button>
+        <button class="bottom-nav-item" id="bottom-nav-admin" onclick="app.navigate('admin')">
+            <i data-lucide="user"></i>
+            <span>Painel</span>
+        </button>
     </div>
 
     <!-- App Logic Script -->

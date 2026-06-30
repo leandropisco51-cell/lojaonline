@@ -153,6 +153,19 @@ const app = {
             navLink.classList.add('active');
         }
 
+        // Update bottom navigation active class
+        document.querySelectorAll('.bottom-nav-item').forEach(el => el.classList.remove('active'));
+        const bottomNavLink = document.getElementById(`bottom-nav-${view}`);
+        if (bottomNavLink) {
+            bottomNavLink.classList.add('active');
+        }
+
+        // Close filters drawer when navigating
+        const filtersSidebar = document.getElementById('filters-sidebar-el');
+        if (filtersSidebar) {
+            filtersSidebar.classList.remove('open');
+        }
+
         // View specific triggers
         if (view === 'catalog') {
             this.renderCatalog();
@@ -549,6 +562,10 @@ const app = {
     updateCartBadge() {
         const count = store.cart.reduce((total, item) => total + item.quantity, 0);
         document.getElementById('cart-badge').textContent = count;
+        const bottomBadge = document.getElementById('bottom-cart-badge');
+        if (bottomBadge) {
+            bottomBadge.textContent = count;
+        }
     },
 
     // Checkout Logic
@@ -1071,6 +1088,13 @@ const app = {
             this.localImageBase64 = e.target.result;
         };
         reader.readAsDataURL(file);
+    },
+
+    toggleMobileFilters() {
+        const sidebar = document.getElementById('filters-sidebar-el');
+        if (sidebar) {
+            sidebar.classList.toggle('open');
+        }
     }
 };
 
