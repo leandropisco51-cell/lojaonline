@@ -200,11 +200,12 @@ const app = {
             this.lookupPurchaseHistory(false);
         }
         
-        // Polling cart and orders every 7 seconds for real-time multiplayer feel
+        // Polling products, cart and orders every 5 seconds for real-time multiplayer sync
         setInterval(async () => {
             const currentView = document.querySelector('.app-view[style*="display: block"]');
             const viewId = currentView ? currentView.id : 'view-home';
             
+            await store.syncProducts();
             await store.syncCart();
             await store.syncOrders();
             
@@ -214,8 +215,13 @@ const app = {
                 this.renderCheckout();
             } else if (viewId === 'view-admin') {
                 this.renderAdmin();
+            } else if (viewId === 'view-catalog') {
+                this.renderCatalog();
+            } else if (viewId === 'view-home') {
+                this.renderFeaturedProducts();
+                this.renderRecommendedProducts();
             }
-        }, 7000);
+        }, 5000);
 
         lucide.createIcons();
     },
