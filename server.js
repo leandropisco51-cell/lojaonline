@@ -106,6 +106,9 @@ const server = http.createServer((req, res) => {
     // API Routes
     if (req.url.startsWith('/api/')) {
         res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
         
         let body = '';
         req.on('data', chunk => { body += chunk; });
@@ -113,14 +116,14 @@ const server = http.createServer((req, res) => {
             const db = readDB();
             
             // GET /api/products
-            if (req.url === '/api/products' && req.method === 'GET') {
+            if (req.url.startsWith('/api/products') && req.method === 'GET') {
                 res.writeHead(200);
                 res.end(JSON.stringify(db.products));
                 return;
             }
             
             // POST /api/products
-            if (req.url === '/api/products' && req.method === 'POST') {
+            if (req.url.startsWith('/api/products') && req.method === 'POST') {
                 try {
                     const newProducts = JSON.parse(body);
                     db.products = newProducts;
@@ -135,14 +138,14 @@ const server = http.createServer((req, res) => {
             }
             
             // GET /api/orders
-            if (req.url === '/api/orders' && req.method === 'GET') {
+            if (req.url.startsWith('/api/orders') && req.method === 'GET') {
                 res.writeHead(200);
                 res.end(JSON.stringify(db.orders));
                 return;
             }
             
             // POST /api/orders
-            if (req.url === '/api/orders' && req.method === 'POST') {
+            if (req.url.startsWith('/api/orders') && req.method === 'POST') {
                 try {
                     const order = JSON.parse(body);
                     db.orders.unshift(order); // Add to beginning
@@ -157,14 +160,14 @@ const server = http.createServer((req, res) => {
             }
             
             // GET /api/cart
-            if (req.url === '/api/cart' && req.method === 'GET') {
+            if (req.url.startsWith('/api/cart') && req.method === 'GET') {
                 res.writeHead(200);
                 res.end(JSON.stringify(db.cart));
                 return;
             }
             
             // POST /api/cart
-            if (req.url === '/api/cart' && req.method === 'POST') {
+            if (req.url.startsWith('/api/cart') && req.method === 'POST') {
                 try {
                     const newCart = JSON.parse(body);
                     db.cart = newCart;
@@ -179,14 +182,14 @@ const server = http.createServer((req, res) => {
             }
 
             // GET /api/notifications
-            if (req.url === '/api/notifications' && req.method === 'GET') {
+            if (req.url.startsWith('/api/notifications') && req.method === 'GET') {
                 res.writeHead(200);
                 res.end(JSON.stringify(db.notifications));
                 return;
             }
             
             // POST /api/notifications
-            if (req.url === '/api/notifications' && req.method === 'POST') {
+            if (req.url.startsWith('/api/notifications') && req.method === 'POST') {
                 try {
                     const notification = JSON.parse(body);
                     notification.id = Date.now();

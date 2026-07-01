@@ -82,7 +82,7 @@ class AppStore {
 
     async syncProducts() {
         try {
-            const res = await fetch('/api/products');
+            const res = await fetch('/api/products?t=' + Date.now());
             this.products = await res.json();
         } catch(e) {
             this.products = JSON.parse(localStorage.getItem('sw_products')) || INITIAL_PRODUCTS;
@@ -91,7 +91,7 @@ class AppStore {
 
     async syncOrders() {
         try {
-            const res = await fetch('/api/orders');
+            const res = await fetch('/api/orders?t=' + Date.now());
             this.orders = await res.json();
         } catch(e) {
             this.orders = JSON.parse(localStorage.getItem('sw_orders')) || [];
@@ -100,7 +100,7 @@ class AppStore {
 
     async syncCart() {
         try {
-            const res = await fetch('/api/cart');
+            const res = await fetch('/api/cart?t=' + Date.now());
             this.cart = await res.json();
         } catch(e) {
             this.cart = JSON.parse(localStorage.getItem('sw_cart')) || [];
@@ -109,7 +109,7 @@ class AppStore {
 
     async syncNotifications() {
         try {
-            const res = await fetch('/api/notifications');
+            const res = await fetch('/api/notifications?t=' + Date.now());
             this.notifications = await res.json();
         } catch(e) {
             this.notifications = [];
@@ -498,7 +498,7 @@ const app = {
         const container = document.getElementById('product-detail-content');
         if (!container) return;
         
-        const p = store.products.find(item => item.id === store.selectedProductId);
+        const p = store.products.find(item => parseInt(item.id) === parseInt(store.selectedProductId));
         if (!p) {
             container.innerHTML = `<div>Produto não encontrado.</div>`;
             return;
@@ -618,7 +618,7 @@ const app = {
 
     // Cart Logic
     async addToCart() {
-        const p = store.products.find(item => item.id === store.selectedProductId);
+        const p = store.products.find(item => parseInt(item.id) === parseInt(store.selectedProductId));
         if (!p) return;
 
         // Check if item with same size/color is already in cart
