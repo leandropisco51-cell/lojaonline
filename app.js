@@ -1,86 +1,63 @@
-// STREETWEAR LAB - Application Core Logic
+// VALLORA - Application Core Logic & Server API Integration
 
-// Initial Products Data
+// Initial Products Data (aligned with server db.json)
 const INITIAL_PRODUCTS = [
     {
         id: 1,
-        name: "Camiseta Heavyweight Oversized Black",
-        description: "Camiseta de algodão premium 260g/m² com caimento oversized perfeito. Encolhimento zero, gola de 3cm e costuras reforçadas.",
-        price: 129.90,
-        category: "Camisetas",
-        sizes: ["P", "M", "G", "GG"],
-        colors: ["#000000", "#708090"],
-        colorsNames: ["Preto", "Chumbo"],
-        stock: 45,
-        image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&q=80"
+        name: "Vestido Premium Vallora Champagne",
+        description: "Vestido confeccionado em crepe de seda premium na cor champagne. Modelagem impecável e caimento refinado para ocasiões especiais.",
+        price: 389.90,
+        category: "Vestidos",
+        sizes: ["P", "M", "G"],
+        colors: ["#F1DBC8", "#ffffff"],
+        colorsNames: ["Champagne", "Branco"],
+        stock: 15,
+        image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800&q=80"
     },
     {
         id: 2,
-        name: "Moletom Canguru Off-White 'STREETS'",
-        description: "Moletom feito de algodão de alta gramatura com felpa interna super macia. Capuz ajustável com forro duplo e estampa minimalista em silk.",
-        price: 249.90,
-        category: "Moletons",
-        sizes: ["M", "G", "GG"],
-        colors: ["#ffffff", "#000000"],
-        colorsNames: ["Branco", "Preto"],
-        stock: 20,
-        image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&q=80"
+        name: "Blazer Vallora Alfaiataria Bronze",
+        description: "Blazer estruturado em alfaiataria clássica de tom bronze/taupe. Abotoamento duplo e forro acetinado de alto padrão.",
+        price: 299.90,
+        category: "Blazers",
+        sizes: ["P", "M", "G", "GG"],
+        colors: ["#998675", "#000000"],
+        colorsNames: ["Bronze", "Preto"],
+        stock: 8,
+        image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&q=80"
     },
     {
         id: 3,
-        name: "Shoulder Bag Impermeável Techwear",
-        description: "Bolsa de ombro transversal com 3 bolsos organizadores. Zíper selado resistente à água e alça com regulador rápido de tamanho.",
-        price: 89.90,
+        name: "Bolsa de Couro Vallora Classic",
+        description: "Bolsa tiracolo em couro legítimo texturizado. Detalhes em metal dourado e compartimentos internos inteligentes.",
+        price: 189.90,
         category: "Acessórios",
         sizes: ["P"],
-        colors: ["#000000", "#ff5a1f"],
-        colorsNames: ["Preto", "Laranja"],
-        stock: 35,
-        image: "https://images.unsplash.com/photo-1576243345690-4e4b79b63288?w=800&q=80"
+        colors: ["#998675", "#000000"],
+        colorsNames: ["Bronze", "Preto"],
+        stock: 22,
+        image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&q=80"
     },
     {
         id: 4,
-        name: "Camiseta Cyberpunk Acid Wash",
-        description: "Lavagem estonada ácida exclusiva em cinza escuro. Estampa frontal e traseira no estilo cyberpunk industrial com tintas de alta fixação.",
-        price: 139.90,
-        category: "Camisetas",
+        name: "Camisa Satin Vallora Elegance",
+        description: "Camisa de cetim brilhante com toque de seda. Gola clássica e punhos alongados, ideal para looks sofisticados.",
+        price: 159.90,
+        category: "Camisas",
         sizes: ["P", "M", "G"],
-        colors: ["#708090"],
-        colorsNames: ["Chumbo"],
-        stock: 12,
-        image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800&q=80"
-    },
-    {
-        id: 5,
-        name: "Moletom Acid Wash Cyber",
-        description: "Moletom canguru com capuz e lavagem estonada premium. Estampas nas mangas e caimento despojado urbano de alto conforto.",
-        price: 279.90,
-        category: "Moletons",
-        sizes: ["P", "M", "G", "GG"],
-        colors: ["#708090", "#000000"],
-        colorsNames: ["Chumbo", "Preto"],
-        stock: 8,
-        image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&q=80"
-    },
-    {
-        id: 6,
-        name: "Boné Strapback Velvet Bordado",
-        description: "Boné aba curva em veludo cotelê de alta durabilidade com ajuste strapback. Bordado frontal STREETWEARLAB em relevo.",
-        price: 79.90,
-        category: "Acessórios",
-        sizes: ["P"],
-        colors: ["#000000", "#ff5a1f"],
-        colorsNames: ["Preto", "Laranja"],
-        stock: 50,
-        image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800&q=80"
+        colors: ["#F1DBC8", "#ffffff"],
+        colorsNames: ["Champagne", "Branco"],
+        stock: 25,
+        image: "https://images.unsplash.com/photo-1603252109303-2751441dd157?w=800&q=80"
     }
 ];
 
 class AppStore {
     constructor() {
-        this.products = JSON.parse(localStorage.getItem('sw_products')) || INITIAL_PRODUCTS;
-        this.orders = JSON.parse(localStorage.getItem('sw_orders')) || [];
-        this.cart = JSON.parse(localStorage.getItem('sw_cart')) || [];
+        this.products = [];
+        this.orders = [];
+        this.cart = [];
+        this.notifications = [];
         
         // Active selections
         this.selectedFilters = {
@@ -93,6 +70,7 @@ class AppStore {
         
         // Checkout state
         this.paymentMethod = "PIX";
+        this.redeemedPoints = 0; // points applied as discount in current checkout
         
         // Current view detail product ID
         this.selectedProductId = null;
@@ -100,23 +78,95 @@ class AppStore {
         // Active Admin Tab
         this.activeAdminTab = "dash";
         this.isAdminAuthenticated = sessionStorage.getItem('sw_admin_auth') === 'true';
-        
-        // Save initial to localStorage if not exists
-        if (!localStorage.getItem('sw_products')) {
-            this.saveProductsToStorage();
+    }
+
+    async syncProducts() {
+        try {
+            const res = await fetch('/api/products');
+            this.products = await res.json();
+        } catch(e) {
+            this.products = JSON.parse(localStorage.getItem('sw_products')) || INITIAL_PRODUCTS;
         }
     }
 
-    saveProductsToStorage() {
-        localStorage.setItem('sw_products', JSON.stringify(this.products));
+    async syncOrders() {
+        try {
+            const res = await fetch('/api/orders');
+            this.orders = await res.json();
+        } catch(e) {
+            this.orders = JSON.parse(localStorage.getItem('sw_orders')) || [];
+        }
     }
 
-    saveOrdersToStorage() {
-        localStorage.setItem('sw_orders', JSON.stringify(this.orders));
+    async syncCart() {
+        try {
+            const res = await fetch('/api/cart');
+            this.cart = await res.json();
+        } catch(e) {
+            this.cart = JSON.parse(localStorage.getItem('sw_cart')) || [];
+        }
     }
 
-    saveCartToStorage() {
+    async syncNotifications() {
+        try {
+            const res = await fetch('/api/notifications');
+            this.notifications = await res.json();
+        } catch(e) {
+            this.notifications = [];
+        }
+    }
+
+    async saveCart() {
         localStorage.setItem('sw_cart', JSON.stringify(this.cart));
+        try {
+            await fetch('/api/cart', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(this.cart)
+            });
+        } catch(e) {
+            console.error("Cart sync failed:", e);
+        }
+    }
+
+    async saveProducts() {
+        localStorage.setItem('sw_products', JSON.stringify(this.products));
+        try {
+            await fetch('/api/products', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(this.products)
+            });
+        } catch(e) {
+            console.error("Products sync failed:", e);
+        }
+    }
+
+    async addOrder(order) {
+        this.orders.unshift(order);
+        localStorage.setItem('sw_orders', JSON.stringify(this.orders));
+        try {
+            await fetch('/api/orders', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(order)
+            });
+        } catch(e) {
+            console.error("Order sync failed:", e);
+        }
+    }
+
+    async addNotification(note) {
+        this.notifications.unshift(note);
+        try {
+            await fetch('/api/notifications', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(note)
+            });
+        } catch(e) {
+            console.error("Notification sync failed:", e);
+        }
     }
 }
 
@@ -125,16 +175,48 @@ const store = new AppStore();
 
 // UI & Logic Controller
 const app = {
-    init() {
+    async init() {
+        // Load data from server
+        await store.syncProducts();
+        await store.syncCart();
+        await store.syncOrders();
+        await store.syncNotifications();
+
         this.navigate('home');
         this.updateCartBadge();
         this.renderCategoryCounts();
         this.renderFeaturedProducts();
+        this.renderRecommendedProducts();
         
         // Dynamic loading of colors into catalog filter
         this.renderCatalogFilterColors();
         this.renderCatalogFilterCategories();
+        this.renderNotifications();
         
+        // Auto-check if there is a previously searched phone for loyalty card on home
+        const savedPhone = localStorage.getItem('vallora_loyalty_phone');
+        if (savedPhone) {
+            document.getElementById('history-phone-input').value = savedPhone;
+            this.lookupPurchaseHistory(false);
+        }
+        
+        // Polling cart and orders every 7 seconds for real-time multiplayer feel
+        setInterval(async () => {
+            const currentView = document.querySelector('.app-view[style*="display: block"]');
+            const viewId = currentView ? currentView.id : 'view-home';
+            
+            await store.syncCart();
+            await store.syncOrders();
+            
+            this.updateCartBadge();
+            
+            if (viewId === 'view-checkout') {
+                this.renderCheckout();
+            } else if (viewId === 'view-admin') {
+                this.renderAdmin();
+            }
+        }, 7000);
+
         lucide.createIcons();
     },
 
@@ -175,6 +257,7 @@ const app = {
             this.renderCheckout();
         } else if (view === 'home') {
             this.renderFeaturedProducts();
+            this.renderRecommendedProducts();
         }
         
         window.scrollTo(0, 0);
@@ -194,7 +277,7 @@ const app = {
 
     // Home view logic
     renderCategoryCounts() {
-        const categories = ["Camisetas", "Moletons", "Acessórios"];
+        const categories = ["Vestidos", "Blazers", "Acessórios", "Camisas"];
         categories.forEach(cat => {
             const count = store.products.filter(p => p.category === cat).length;
             const el = document.getElementById(`count-${cat}`);
@@ -209,6 +292,16 @@ const app = {
         // Pick the first 3 products for featured list
         const items = store.products.slice(0, 3);
         featuredEl.innerHTML = items.map(p => this.createProductCardHtml(p)).join('');
+        lucide.createIcons();
+    },
+
+    renderRecommendedProducts() {
+        const recEl = document.getElementById('home-recommended-products');
+        if (!recEl) return;
+        
+        // Select products (e.g. reverse list or random ones)
+        const items = store.products.slice().reverse().slice(0, 4);
+        recEl.innerHTML = items.map(p => this.createProductCardHtml(p)).join('');
         lucide.createIcons();
     },
 
@@ -252,7 +345,7 @@ const app = {
         const container = document.getElementById('filter-categories-list');
         if (!container) return;
         
-        const categories = ["Todos", "Camisetas", "Moletons", "Acessórios"];
+        const categories = ["Todos", "Vestidos", "Blazers", "Acessórios", "Camisas"];
         container.innerHTML = categories.map(cat => {
             const isChecked = cat === "Todos" ? !store.selectedFilters.category : store.selectedFilters.category === cat;
             return `
@@ -368,7 +461,6 @@ const app = {
         } else if (store.currentSort === 'price-desc') {
             filtered.sort((a, b) => b.price - a.price);
         } else {
-            // "recent" or default: sorted by reverse id
             filtered.sort((a, b) => b.id - a.id);
         }
 
@@ -405,6 +497,17 @@ const app = {
             container.innerHTML = `<div>Produto não encontrado.</div>`;
             return;
         }
+
+        // Selected recommendations excluding current
+        const recList = store.products.filter(item => item.id !== p.id).slice(0, 3);
+        const recsHtml = recList.length > 0 ? `
+            <div style="margin-top: 3rem; grid-column: span 2; border-top: 1px solid var(--border); padding-top: 2rem;">
+                <h3 style="margin-bottom: 1.5rem;">Recomendado com Este Item</h3>
+                <div class="products-grid">
+                    ${recList.map(item => this.createProductCardHtml(item)).join('')}
+                </div>
+            </div>
+        ` : '';
 
         container.innerHTML = `
             <div class="product-gallery">
@@ -450,10 +553,11 @@ const app = {
                 </div>
 
                 <div style="border-top: 1px solid var(--border); padding-top: 1.5rem; color: var(--text-secondary); font-size: 0.9rem; display: flex; flex-direction: column; gap: 0.5rem;">
-                    <div><i data-lucide="truck" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 0.5rem; color: var(--secondary);"></i> Frete grátis para todo o Brasil.</div>
+                    <div><i data-lucide="truck" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 0.5rem; color: var(--primary);"></i> Frete grátis para todo o Brasil.</div>
                     <div><i data-lucide="rotate-ccw" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 0.5rem;"></i> Primeira troca gratuita em até 7 dias.</div>
                 </div>
             </div>
+            ${recsHtml}
         `;
 
         // Save selected size/color options
@@ -507,7 +611,7 @@ const app = {
     },
 
     // Cart Logic
-    addToCart() {
+    async addToCart() {
         const p = store.products.find(item => item.id === store.selectedProductId);
         if (!p) return;
 
@@ -533,28 +637,27 @@ const app = {
             });
         }
 
-        store.saveCartToStorage();
+        await store.saveCart();
         this.updateCartBadge();
         
-        // Show subtle notification and go to Checkout
         alert('Produto adicionado à sacola!');
         this.navigate('checkout');
     },
 
-    removeFromCart(idx) {
+    async removeFromCart(idx) {
         store.cart.splice(idx, 1);
-        store.saveCartToStorage();
+        await store.saveCart();
         this.updateCartBadge();
         this.renderCheckout();
     },
 
-    updateCartQty(idx, amount) {
+    async updateCartQty(idx, amount) {
         store.cart[idx].quantity += amount;
         if (store.cart[idx].quantity < 1) {
             this.removeFromCart(idx);
             return;
         }
-        store.saveCartToStorage();
+        await store.saveCart();
         this.updateCartBadge();
         this.renderCheckout();
     },
@@ -585,6 +688,66 @@ const app = {
         lucide.createIcons();
     },
 
+    // Loyalty point system calculations
+    calculateClientPoints(phone) {
+        if (!phone) return 0;
+        const formattedPhone = phone.trim().replace(/\D/g, '');
+        if (!formattedPhone) return 0;
+        
+        let earned = 0;
+        let redeemed = 0;
+
+        store.orders.forEach(o => {
+            const orderPhone = o.customer.phone.trim().replace(/\D/g, '');
+            if (orderPhone === formattedPhone) {
+                // Earn 10% value in points on paid/shipped orders
+                if (o.status === 'Pago' || o.status === 'Enviado') {
+                    earned += Math.floor(o.total * 0.1);
+                }
+                // Check if they redeemed points in this order
+                if (o.redeemedPoints) {
+                    redeemed += o.redeemedPoints;
+                }
+            }
+        });
+
+        return Math.max(0, earned - redeemed);
+    },
+
+    applyLoyaltyDiscount() {
+        const phone = document.getElementById('checkout-phone').value.trim();
+        if (!phone) {
+            alert('Por favor, informe seu telefone na seção Seus Dados primeiro.');
+            return;
+        }
+
+        const availablePoints = this.calculateClientPoints(phone);
+        if (availablePoints <= 0) {
+            alert('Você ainda não possui pontos de fidelidade disponíveis.');
+            return;
+        }
+
+        const subtotal = store.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        // Can only redeem up to 50% of subtotal
+        const maxRedeemable = Math.floor(subtotal * 0.5);
+        const pointsToRedeem = Math.min(availablePoints, maxRedeemable);
+
+        if (store.redeemedPoints > 0) {
+            // Cancel discount
+            store.redeemedPoints = 0;
+            document.getElementById('btn-apply-loyalty').textContent = "Resgatar Pontos";
+            document.getElementById('loyalty-discount-row').style.display = 'none';
+        } else {
+            // Apply discount
+            store.redeemedPoints = pointsToRedeem;
+            document.getElementById('btn-apply-loyalty').textContent = "Remover Desconto";
+            document.getElementById('loyalty-discount-row').style.display = 'flex';
+            document.getElementById('summary-loyalty-discount').textContent = `- R$ ${pointsToRedeem.toFixed(2).replace('.', ',')}`;
+        }
+
+        this.updateCheckoutTotals();
+    },
+
     renderCheckout() {
         const container = document.getElementById('checkout-cart-items');
         if (!container) return;
@@ -596,6 +759,7 @@ const app = {
                     <p>Sua sacola está vazia.</p>
                 </div>
             `;
+            document.getElementById('checkout-loyalty-redeem').style.display = 'none';
             this.updateCheckoutTotals();
             return;
         }
@@ -623,21 +787,37 @@ const app = {
             </div>
         `).join('');
 
+        // Sincroniza e mostra a área de pontos se houver telefone digitado
+        const phoneInput = document.getElementById('checkout-phone');
+        if (phoneInput) {
+            phoneInput.oninput = () => {
+                const phone = phoneInput.value.trim();
+                const points = this.calculateClientPoints(phone);
+                if (phone.length >= 8) {
+                    document.getElementById('checkout-loyalty-redeem').style.display = 'block';
+                    document.getElementById('checkout-loyalty-points-label').textContent = `Você possui ${points} pontos de fidelidade`;
+                } else {
+                    document.getElementById('checkout-loyalty-redeem').style.display = 'none';
+                }
+            };
+        }
+
         this.updateCheckoutTotals();
         lucide.createIcons();
     },
 
     updateCheckoutTotals() {
         const subtotal = store.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const discount = store.paymentMethod === 'PIX' ? subtotal * 0.05 : 0;
-        const total = subtotal - discount;
+        const pixDiscount = store.paymentMethod === 'PIX' ? subtotal * 0.05 : 0;
+        const loyaltyDiscount = store.redeemedPoints || 0;
+        const total = Math.max(0, subtotal - pixDiscount - loyaltyDiscount);
 
         document.getElementById('summary-subtotal').textContent = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
         
         const discountRow = document.getElementById('pix-discount-row');
         if (store.paymentMethod === 'PIX') {
             discountRow.style.display = 'flex';
-            document.getElementById('summary-discount').textContent = `- R$ ${discount.toFixed(2).replace('.', ',')}`;
+            document.getElementById('summary-discount').textContent = `- R$ ${pixDiscount.toFixed(2).replace('.', ',')}`;
         } else {
             discountRow.style.display = 'none';
         }
@@ -645,7 +825,7 @@ const app = {
         document.getElementById('summary-total').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
     },
 
-    submitOrder() {
+    async submitOrder() {
         if (store.cart.length === 0) {
             alert('Adicione produtos à sua sacola antes de finalizar!');
             return;
@@ -677,8 +857,9 @@ const app = {
 
         // Create Order object
         const subtotal = store.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const discount = store.paymentMethod === 'PIX' ? subtotal * 0.05 : 0;
-        const total = subtotal - discount;
+        const pixDiscount = store.paymentMethod === 'PIX' ? subtotal * 0.05 : 0;
+        const loyaltyDiscount = store.redeemedPoints || 0;
+        const total = Math.max(0, subtotal - pixDiscount - loyaltyDiscount);
 
         const newOrder = {
             id: `PED-${Math.floor(100000 + Math.random() * 900000)}`,
@@ -686,13 +867,13 @@ const app = {
             customer: { name, email, phone, address },
             items: [...store.cart],
             paymentMethod: store.paymentMethod,
+            redeemedPoints: store.redeemedPoints,
             total: total,
             status: 'Pendente'
         };
 
-        // Add order to local list
-        store.orders.unshift(newOrder);
-        store.saveOrdersToStorage();
+        // Add order to server database
+        await store.addOrder(newOrder);
 
         // Reduce stock in products list
         store.cart.forEach(cartItem => {
@@ -701,12 +882,18 @@ const app = {
                 store.products[prodIndex].stock = Math.max(0, store.products[prodIndex].stock - cartItem.quantity);
             }
         });
-        store.saveProductsToStorage();
+        await store.saveProducts();
 
-        // Empty Cart
+        // Empty Cart on server
         store.cart = [];
-        store.saveCartToStorage();
+        await store.saveCart();
         this.updateCartBadge();
+
+        // Save phone to localStorage to quickly show loyalty card on Home
+        localStorage.setItem('vallora_loyalty_phone', phone);
+        
+        // Reset discount points
+        store.redeemedPoints = 0;
 
         // Trigger Success Payment / Instructions Modal
         this.openOrderModal(newOrder);
@@ -719,23 +906,22 @@ const app = {
         let paymentInstructions = '';
         if (order.paymentMethod === 'PIX') {
             paymentInstructions = `
-                <div style="background-color: white; padding: 1.5rem; border-radius: 16px; margin: 1rem 0;">
-                    <!-- Simulating QR Code -->
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=STREETWEARLAB-${order.id}-${order.total.toFixed(2)}" alt="PIX QR Code" style="display: block;">
+                <div style="background-color: white; padding: 1rem; border-radius: 16px; margin: 0.5rem 0;">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=VALLORA-${order.id}-${order.total.toFixed(2)}" alt="PIX QR Code" style="display: block; width: 150px; height: 150px;">
                 </div>
                 <div style="width: 100%;">
-                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Chave Copia e Cola:</p>
-                    <div style="background-color: var(--bg-main); border: 1px solid var(--border); padding: 0.75rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; word-break: break-all; margin-bottom: 1rem;">
-                        00020101021226830014br.gov.bcb.pix2561pix.streetwearlab.com.br/qr/${order.id}5204000053039865405${order.total.toFixed(2)}5802BR5915StreetwearLab6009SaoPaulo62070503***6304
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.25rem;">Chave Copia e Cola:</p>
+                    <div style="background-color: var(--bg-main); border: 1px solid var(--border); padding: 0.75rem; border-radius: 8px; font-family: monospace; font-size: 0.8rem; word-break: break-all; margin-bottom: 0.75rem;">
+                        00020101021226830014br.gov.bcb.pix2561pix.vallora.com.br/qr/${order.id}5204000053039865405${order.total.toFixed(2)}5802BR5907Vallora6009SaoPaulo62070503***6304
                     </div>
-                    <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="navigator.clipboard.writeText('00020101021226830014br.gov.bcb.pix2561pix.streetwearlab.com.br/qr/${order.id}5204000053039865405${order.total.toFixed(2)}5802BR5915StreetwearLab6009SaoPaulo62070503***6304'); alert('Código PIX copiado!');">Copiar Código PIX</button>
+                    <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="navigator.clipboard.writeText('00020101021226830014br.gov.bcb.pix2561pix.vallora.com.br/qr/${order.id}5204000053039865405${order.total.toFixed(2)}5802BR5907Vallora6009SaoPaulo62070503***6304'); alert('Código PIX copiado!');">Copiar Código PIX</button>
                 </div>
             `;
         } else if (order.paymentMethod === 'Boleto') {
             paymentInstructions = `
-                <div style="width: 100%; text-align: left; margin: 1rem 0;">
-                    <p style="font-weight: 600; margin-bottom: 0.5rem;">Código de Barras:</p>
-                    <div style="background-color: var(--bg-main); border: 1px solid var(--border); padding: 0.75rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; word-break: break-all; margin-bottom: 1rem; text-align: center; letter-spacing: 1px;">
+                <div style="width: 100%; text-align: left; margin: 0.5rem 0;">
+                    <p style="font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem;">Código de Barras:</p>
+                    <div style="background-color: var(--bg-main); border: 1px solid var(--border); padding: 0.75rem; border-radius: 8px; font-family: monospace; font-size: 0.8rem; word-break: break-all; margin-bottom: 0.75rem; text-align: center; letter-spacing: 1px;">
                         34191.79001 01043.513184 91020.150008 7 968700000${Math.floor(order.total)}
                     </div>
                     <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="navigator.clipboard.writeText('34191.79001 01043.513184 91020.150008 7 968700000${Math.floor(order.total)}'); alert('Linha digitável copiada!');">Copiar Código de Barras</button>
@@ -743,24 +929,39 @@ const app = {
             `;
         } else {
             paymentInstructions = `
-                <div style="color: var(--secondary); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin: 1rem 0;">
-                    <i data-lucide="check-circle-2" style="width: 48px; height: 48px;"></i>
+                <div style="color: var(--secondary); display: flex; flex-direction: column; align-items: center; gap: 0.25rem; margin: 0.5rem 0;">
+                    <i data-lucide="check-circle-2" style="width: 32px; height: 32px;"></i>
                     <p style="font-weight: 700;">Cartão de Crédito Aprovado!</p>
                 </div>
-                <p style="color: var(--text-secondary); text-align: center;">Sua operadora de cartão de crédito confirmou a transação de forma imediata.</p>
             `;
         }
 
+        // WhatsApp redirect string
+        const textMsg = encodeURIComponent(`Obrigada por comprar na Vallora! 💕 Seu pedido ${order.id} foi recebido e será confirmado em breve pela nossa equipe. Valor total: R$ ${order.total.toFixed(2).replace('.', ',')}.`);
+        const waLink = `https://api.whatsapp.com/send?phone=5551987654321&text=${textMsg}`; // Example merchant phone
+
         content.innerHTML = `
-            <div style="color: var(--secondary); background-color: rgba(16, 185, 129, 0.1); border-radius: 50%; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
-                <i data-lucide="shopping-bag" style="width: 32px; height: 32px;"></i>
+            <div style="color: var(--primary); background-color: rgba(153, 134, 117, 0.1); border-radius: 50%; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="shopping-bag" style="width: 28px; height: 28px;"></i>
             </div>
-            <h2>Pedido Recebido!</h2>
-            <p style="color: var(--text-secondary);">ID do Pedido: <strong style="color: var(--text-primary);">${order.id}</strong></p>
+            <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Pedido Recebido!</h2>
+            <div style="background-color: rgba(153, 134, 117, 0.08); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; width: 100%; text-align: center; margin-bottom: 0.5rem;">
+                <p style="color: var(--text-primary); font-weight: 600; font-size: 0.95rem; margin-bottom: 0.25rem;">
+                    Obrigada por comprar na Vallora! 💕
+                </p>
+                <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.4;">
+                    Seu pedido foi recebido e será confirmado em breve pela nossa equipe.
+                </p>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">ID do Pedido: <strong style="color: var(--text-primary);">${order.id}</strong></p>
             
             ${paymentInstructions}
 
-            <button class="btn-secondary" style="margin-top: 1.5rem; width: 100%; justify-content: center;" onclick="app.closeOrderModal(); app.navigate('home');">Voltar para a Home</button>
+            <a href="${waLink}" target="_blank" class="btn-primary" style="margin-top: 1rem; width: 100%; justify-content: center; background-color: #25d366; border-color: #25d366;">
+                <i data-lucide="message-circle"></i> Enviar Confirmação via WhatsApp
+            </a>
+
+            <button class="btn-secondary" style="margin-top: 0.5rem; width: 100%; justify-content: center;" onclick="app.closeOrderModal(); app.navigate('home');">Voltar para a Home</button>
         `;
 
         overlay.classList.add('open');
@@ -771,18 +972,154 @@ const app = {
         document.getElementById('order-modal').classList.remove('open');
     },
 
+    // Lookup purchase history from phone
+    lookupPurchaseHistory(shouldFocus = true) {
+        const phone = document.getElementById('history-phone-input').value.trim();
+        if (!phone) {
+            alert('Digite um número de telefone para realizar a busca.');
+            return;
+        }
+
+        const formattedPhone = phone.replace(/\D/g, '');
+        if (formattedPhone.length < 8) {
+            alert('Por favor, informe um número de telefone válido.');
+            return;
+        }
+
+        // Save phone to quickly load points
+        localStorage.setItem('vallora_loyalty_phone', phone);
+
+        const clientOrders = store.orders.filter(o => o.customer.phone.replace(/\D/g, '') === formattedPhone);
+        const points = this.calculateClientPoints(phone);
+
+        // Update home loyalty card
+        const cardEl = document.getElementById('loyalty-card-el');
+        cardEl.style.display = 'flex';
+        document.getElementById('loyalty-points-val').textContent = points;
+        
+        // Progress bar (cap at 500 points reward tier)
+        const progressPercent = Math.min(100, (points / 500) * 100);
+        document.getElementById('loyalty-progress-bar-el').style.style = `width: ${progressPercent}%;`;
+        document.getElementById('loyalty-progress-bar-el').style.width = `${progressPercent}%`;
+        document.getElementById('loyalty-progress-text').textContent = points >= 500 
+            ? "Você atingiu o nível máximo de fidelidade! Resgate descontos na sacola." 
+            : `${points}/500 pontos acumulados para o próximo prêmio.`;
+
+        // Render History Items
+        const resultsArea = document.getElementById('history-results-area');
+        resultsArea.style.display = 'block';
+        
+        if (clientOrders.length === 0) {
+            resultsArea.innerHTML = `
+                <div style="text-align: center; padding: 1.5rem 0; color: var(--text-secondary); font-size: 0.9rem;">
+                    Nenhum pedido encontrado para o telefone informado.
+                </div>
+            `;
+        } else {
+            resultsArea.innerHTML = `
+                <h4 style="margin-bottom: 0.75rem; font-size: 0.95rem;">Histórico de Compras (${clientOrders.length})</h4>
+                <div style="max-height: 300px; overflow-y: auto; padding-right: 0.25rem;">
+                    ${clientOrders.map(o => `
+                        <div class="history-item">
+                            <div class="history-item-header">
+                                <span>ID: ${o.id}</span>
+                                <span class="status-badge ${o.status === 'Pendente' ? 'pending' : o.status === 'Pago' ? 'paid' : 'shipped'}">${o.status}</span>
+                            </div>
+                            <div class="history-item-body">
+                                <div><strong>Data:</strong> ${o.date}</div>
+                                <div><strong>Total:</strong> R$ ${o.total.toFixed(2).replace('.', ',')}</div>
+                                <div style="margin-top: 0.25rem; font-size: 0.8rem; color: var(--text-secondary);">
+                                    ${o.items.map(item => `${item.name} (${item.size}/${item.quantity}x)`).join(', ')}
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        if (shouldFocus) {
+            resultsArea.scrollIntoView({ behavior: 'smooth' });
+        }
+        lucide.createIcons();
+    },
+
+    // Promotions Notifications Panel
+    toggleNotificationsPanel() {
+        const panel = document.getElementById('notifications-panel-el');
+        if (panel) {
+            panel.classList.toggle('active');
+            
+            // Hide badge once opened
+            const badge = document.getElementById('notification-badge-el');
+            if (badge) badge.style.display = 'none';
+        }
+    },
+
+    renderNotifications() {
+        const listContainer = document.getElementById('notifications-list');
+        const badge = document.getElementById('notification-badge-el');
+        if (!listContainer) return;
+
+        if (store.notifications.length === 0) {
+            listContainer.innerHTML = `
+                <div style="text-align: center; padding: 1.5rem 0; color: var(--text-secondary); font-size: 0.85rem;">
+                    Nenhuma notificação no momento.
+                </div>
+            `;
+            if (badge) badge.style.display = 'none';
+            return;
+        }
+
+        listContainer.innerHTML = store.notifications.map(n => `
+            <div class="notification-item">
+                <div class="notification-title">${n.title}</div>
+                <div class="notification-message">${n.message}</div>
+                <div class="notification-date">${n.date}</div>
+            </div>
+        `).join('');
+
+        // Show active badge if notifications panel is closed
+        const panel = document.getElementById('notifications-panel-el');
+        if (panel && !panel.classList.contains('active') && badge) {
+            badge.style.display = 'block';
+        }
+    },
+
+    async sendPromoNotification(e) {
+        e.preventDefault();
+        const title = document.getElementById('promo-title').value.trim();
+        const message = document.getElementById('promo-message').value.trim();
+
+        if (!title || !message) return;
+
+        const newNote = {
+            title,
+            message
+        };
+
+        await store.addNotification(newNote);
+        await store.syncNotifications();
+        this.renderNotifications();
+
+        document.getElementById('admin-promo-form').reset();
+        alert('Promoção enviada para todos os clientes!');
+    },
+
     // CMS / Admin View Logic
     setAdminTab(tab) {
         store.activeAdminTab = tab;
         
         // Update menu active tabs
         document.querySelectorAll('.admin-menu-item').forEach(item => item.classList.remove('active'));
-        document.getElementById(`admin-menu-${tab === 'dash' ? 'dash' : tab === 'inventory' ? 'inventory' : 'orders'}`).classList.add('active');
+        const menuTab = document.getElementById(`admin-menu-${tab}`);
+        if (menuTab) menuTab.classList.add('active');
 
         // Toggle panels
         document.getElementById('admin-tab-dash').style.display = tab === 'dash' ? 'block' : 'none';
         document.getElementById('admin-tab-inventory').style.display = tab === 'inventory' ? 'block' : 'none';
         document.getElementById('admin-tab-orders').style.display = tab === 'orders' ? 'block' : 'none';
+        document.getElementById('admin-tab-promos').style.display = tab === 'promos' ? 'block' : 'none';
 
         this.renderAdmin();
     },
@@ -913,7 +1250,7 @@ const app = {
                     <td style="font-weight: 700;">${o.id}</td>
                     <td>
                         <div><strong>${o.customer.name}</strong></div>
-                        <div style="font-size: 0.8rem; color: var(--text-secondary);">${o.customer.email}</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">${o.customer.phone}</div>
                     </td>
                     <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${itemsSummary}">${itemsSummary}</td>
                     <td>R$ ${o.total.toFixed(2).replace('.', ',')}</td>
@@ -934,20 +1271,37 @@ const app = {
         }).join('');
     },
 
-    updateOrderStatus(orderId, newStatus) {
+    async updateOrderStatus(orderId, newStatus) {
         const idx = store.orders.findIndex(o => o.id === orderId);
         if (idx > -1) {
             store.orders[idx].status = newStatus;
-            store.saveOrdersToStorage();
+            
+            // Re-save entire list on server
+            localStorage.setItem('sw_orders', JSON.stringify(store.orders));
+            try {
+                // Sincroniza via POST order endpoint se houver suporte, ou apenas salvando no store do server.
+                // Como não temos um endpoint direto de patch para order simples, usamos o save db do node.
+                // Para simplificar, reenviamos a lista atualizada
+                await fetch('/api/orders', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(store.orders[idx]) // adds/updates order
+                });
+                // Recarrega todos os pedidos
+                await store.syncOrders();
+            } catch(e) {
+                console.error(e);
+            }
+
             this.renderAdmin();
         }
     },
 
-    deleteProduct(id) {
+    async deleteProduct(id) {
         if (!confirm('Deseja realmente remover este produto do catálogo?')) return;
         
         store.products = store.products.filter(p => p.id !== id);
-        store.saveProductsToStorage();
+        await store.saveProducts();
         
         this.renderAdmin();
         this.renderCategoryCounts();
@@ -993,7 +1347,7 @@ const app = {
         document.getElementById('product-modal').classList.remove('open');
     },
 
-    saveProduct(e) {
+    async saveProduct(e) {
         e.preventDefault();
         
         const id = document.getElementById('edit-product-id').value;
@@ -1022,7 +1376,9 @@ const app = {
             "#000000": "Preto",
             "#ffffff": "Branco",
             "#708090": "Chumbo",
-            "#ff5a1f": "Laranja"
+            "#ff5a1f": "Laranja",
+            "#FAF8F6": "Champagne",
+            "#998675": "Bronze"
         };
         const colorsNames = colors.map(c => colorsNamesMap[c] || "Outro");
 
@@ -1069,13 +1425,13 @@ const app = {
             store.products.push(newProd);
         }
 
-        store.saveProductsToStorage();
+        await store.saveProducts();
         this.closeProductModal();
         this.renderAdmin();
         this.renderCategoryCounts();
         this.renderFeaturedProducts();
+        this.renderRecommendedProducts();
         
-        // Refresh catalog sidebar filter if open
         this.renderCatalogFilterColors();
     },
 

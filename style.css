@@ -5,36 +5,36 @@
     --font-heading: 'Syne', sans-serif;
     --font-body: 'Outfit', sans-serif;
     
-    /* Dark Theme (Default) */
-    --bg-main: #0b0f19;
-    --bg-surface: #131c2e;
-    --bg-surface-hover: #1e2942;
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --primary: #ff5a1f; /* Neon Orange */
-    --primary-hover: #e04810;
-    --secondary: #10b981; /* Emerald Green */
-    --border: rgba(255, 255, 255, 0.08);
-    --border-focus: rgba(255, 90, 31, 0.4);
-    --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-    --glass: rgba(19, 28, 46, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.05);
+    /* Dark Theme (Default) - Vallora Chocolate/Champagne */
+    --bg-main: #0f0d0c;
+    --bg-surface: #1b1816;
+    --bg-surface-hover: #26221f;
+    --text-primary: #FAF8F6;
+    --text-secondary: #b6a89f;
+    --primary: #998675; /* Elegant Warm Taupe */
+    --primary-hover: #806f60;
+    --secondary: #FAF8F6; /* Cream/Champagne */
+    --border: rgba(241, 219, 200, 0.08);
+    --border-focus: rgba(153, 134, 117, 0.4);
+    --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+    --glass: rgba(27, 24, 22, 0.75);
+    --glass-border: rgba(241, 219, 200, 0.05);
 }
 
 [data-theme="light"] {
-    --bg-main: #f8fafc;
+    --bg-main: #FAF8F6; /* Luxury Champagne Off-white */
     --bg-surface: #ffffff;
-    --bg-surface-hover: #f1f5f9;
-    --text-primary: #0f172a;
-    --text-secondary: #64748b;
-    --primary: #ff5a1f;
-    --primary-hover: #e04810;
-    --secondary: #059669;
-    --border: rgba(0, 0, 0, 0.08);
-    --border-focus: rgba(255, 90, 31, 0.3);
-    --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
-    --glass: rgba(255, 255, 255, 0.8);
-    --glass-border: rgba(0, 0, 0, 0.05);
+    --bg-surface-hover: #F1ECE8;
+    --text-primary: #1c1917;
+    --text-secondary: #807268;
+    --primary: #998675; /* Elegant Warm Taupe */
+    --primary-hover: #806f60;
+    --secondary: #FAF8F6;
+    --border: rgba(153, 134, 117, 0.15);
+    --border-focus: rgba(153, 134, 117, 0.3);
+    --shadow: 0 10px 30px -10px rgba(153, 134, 117, 0.1);
+    --glass: rgba(250, 248, 246, 0.8);
+    --glass-border: rgba(153, 134, 117, 0.08);
 }
 
 /* Global Reset */
@@ -101,25 +101,28 @@ header {
 }
 
 .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+}
+
+.logo img {
+    height: 48px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover img {
+    transform: scale(1.05);
+}
+
+.logo-text {
     font-family: var(--font-heading);
     font-size: 1.8rem;
     font-weight: 800;
-    background: linear-gradient(135deg, var(--primary), #ffaa47);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.logo span {
-    font-size: 0.8rem;
-    background: var(--text-primary);
-    color: var(--bg-main);
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-    font-family: var(--font-body);
-    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--text-primary);
 }
 
 .nav-menu {
@@ -1524,3 +1527,150 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
+/* =============================================
+   VALLORA NEW FEATURES (Loyalty, Notifications, History)
+   ============================================= */
+/* Promo Notifications panel */
+.notifications-panel {
+    display: none;
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    width: 320px;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.25rem;
+    box-shadow: var(--shadow);
+    z-index: 1001;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.notifications-panel.active {
+    display: block;
+}
+
+.notification-item {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+    color: var(--text-primary);
+}
+
+.notification-message {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.notification-date {
+    font-size: 0.75rem;
+    color: var(--primary);
+    margin-top: 0.25rem;
+}
+
+/* Loyalty Program Card */
+.loyalty-card {
+    background: linear-gradient(135deg, var(--bg-surface), var(--bg-surface-hover));
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.loyalty-info {
+    max-width: 65%;
+}
+
+.loyalty-points-display {
+    text-align: right;
+}
+
+.loyalty-points-value {
+    font-size: 2.2rem;
+    font-weight: 800;
+    font-family: var(--font-heading);
+    color: var(--primary);
+    line-height: 1;
+}
+
+.loyalty-progress-container {
+    width: 100%;
+    background-color: var(--bg-main);
+    height: 8px;
+    border-radius: 4px;
+    margin-top: 0.75rem;
+    overflow: hidden;
+}
+
+.loyalty-progress-bar {
+    background-color: var(--primary);
+    height: 100%;
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+/* Purchase History Styles */
+.history-search-container {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.history-item {
+    background-color: var(--bg-main);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.history-item-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.history-item-body {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+/* Notification badge indicator */
+.nav-actions {
+    position: relative;
+}
+
+.notification-badge {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--primary);
+    border-radius: 50%;
+}
+
